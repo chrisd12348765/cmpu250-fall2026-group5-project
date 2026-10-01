@@ -1,0 +1,143 @@
+\documentclass[manuscript,authorversion,nonacm]{acmart}
+
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage[table]{xcolor}
+\usepackage{balance}
+\usepackage{soul}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{wrapfig}
+\usepackage{makecell}
+\usepackage{etoolbox}
+
+\makeatletter
+\let\@authorsaddresses\@empty
+\makeatother
+
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    \normalfont B\kern-0.5em{\scshape i\kern-0.25em b}\kern-0.8em\TeX}}}
+
+\settopmatter{printacmref=false}
+
+\begin{document}
+
+\title[Proposal]{Proposal}
+
+\author{Brandon Ogesi, Tony Mwangi, Christian Davidson}
+\affiliation{%
+  \institution{CMPU 250}
+  \city{Fall 2026}
+  \country{Vassar College}
+}
+
+\renewcommand{\shortauthors}{Ogesi, Mwangi, Davidson}
+
+\maketitle
+
+\section{Introduction}
+
+An individual’s mortgage application will result in either an approved or denied loan; both are crucial for determining if the individual can purchase a house. Under the Home Mortgage Disclosure Act (HMDA), lenders must submit their application results as well as applicant, loan and property data. Those public files may be used by researchers to determine how applicants were treated in terms of being approved for a mortgage but they do contain all factors the lender may have considered when making their decision.
+
+Lewis-Faupel and Tenev (2024) analyzed applications submitted to U.S. lenders to find racial and ethnic differences in approval and pricing. In their abstract, Lewis-Faupel and Tenev state ``credit score, income and down payments each contribute significantly to disparities in mortgage access and affordability'' which motivated us to compare unadjusted denial rates versus adjusted denial rates.
+
+\subsection{Motivation}
+
+Unequal access to mortgages is a real world problem especially in countries with diverse racial groups. Being able to access mortgages is one way that allows people to build homes and being denied this or having to pay more interest can affect one's finances. Today, mortgage applications are evaluated by automated systems and some by human workers. Both show biases and in this analysis we want to see if acceptance or denial are affected by racial biases by the automated systems and the human workers. We are also investigating if factors such as sex and income affect the issuance and denial of mortgages. We are also curious to see how loan amount, loan type, debt-to-income ratio, lender, and metro area interplay with race and sex and how these affect the evaluation and decision to either give or deny someone a mortgage loan.
+
+\subsection{Research Questions}
+
+\begin{itemize}
+    \item[\textbf{(RQ1)}] Among 2025 home-purchase applications at three large lenders in New York, how do denial rates differ by reported applicant race, ethnicity, and the minority population percentage of the property's census tract?
+    \item[\textbf{(RQ2)}] How do those differences change when we account for income, loan amount, loan type, debt-to-income ratio, lender, and metro area? Do different combinations of these factors change the results?
+    \item[\textbf{(RQ3)}] Across the variables we measured, which are most strongly associated with denial, and which show the least association?
+\end{itemize}
+
+\section{Data Description}
+
+We found this data as we were searching for public data on mortgages. It comes from the Home Mortgage Disclosure Act (HMDA) data published by the FFIEC, which requires lenders to report nearly every mortgage application. We downloaded 2025 New York applications for three large lending institutions. The dataset is interesting because it links many variables, including applicant demographics, finances, loan details, and neighborhood characteristics, to each lending decision and we have a broad scope on what we can analyze. Some of the variables we plan to work with are shown below. We did not have time to create a notebook for initial data wrangling for this deadline, but intend to start working on and cleaning the data shortly.
+
+\subsection{Outcome}
+
+\noindent\textbf{action\_taken:}
+
+action\_taken is a categorical variable recording the result of each application: originated, approved but not accepted, denied, withdrawn, closed for incompleteness, purchased, or a preapproval outcome.
+
+We plan to recode into a binary outcome accepted vs denied after dropping loans, withdrawals, incomplete and prepapprovals
+
+\subsection{Applicant characteristics}
+
+derived\_race and derived\_ethnicity are categorical variables combining applicant and co-applicant responses into one category per application. Race covers the five Census race groups plus ``2 or more minority races,'' ``Joint'' (applicants report different races), and ``Not Available''; ethnicity is coded as Hispanic or Latino, Not Hispanic or Latino, Joint, or Not Available.
+
+I will use omit ``Not Available'' records when using this as a main explanatory variable
+
+\noindent\textbf{ageapplicant:}
+
+It is an ordered categorical variable ranging from under 25 to over 74, with 8888 indicating a missing value; - I will use this for categorical control and label 8888 as missing values
+
+\noindent\textbf{income:} Numeric, in \$1,000s
+
+It is the gross annual income, in thousands of dollars, relied on in making the credit decision. Consists of Varying Values ; Measured in Numeric, in \$1,000s
+
+\noindent\textbf{debt\_to\_income\_ratio:}
+
+It is an ordered categorical variable with bins of $<$20\%, 20-30\%, 30-36\%, single-percentage bins from 36\% to 49\%, 50-60\%, and $>$60\%. I’ll merge some groups into broader group for easier analysis
+
+\subsection{Loan and lender characteristics}
+
+\noindent\textbf{Lei:}
+
+It is a is the lender's Legal Entity Identifier, a categorical variable, used to group applications by institution;
+
+\noindent\textbf{loan\_type:}
+
+It is a categorical, identifying whether a loan is conventional, FHA-insured, VA-guaranteed, or USDA-guaranteed
+
+\noindent\textbf{Loan\_amount:}
+
+It is in numeric, in dollars, and is reported at the midpoint of \$10,000 intervals to protect privacy.
+
+\subsection{Geographic and neighborhood characteristics}
+
+\noindent\textbf{census\_tract:}
+
+11 digit census tract number with Varying values of Geographic ID data type
+
+\noindent\textbf{tract\_minority\_population\_percent:}
+
+It is numeric percent, ranging from 0 to 100, and measures the minority share of tract residents.
+
+\noindent\textbf{tract\_to\_msa\_income\_percentage:}
+
+It is numeric percent and compares tract median family income to the metro-area median, where 100 indicates parity;
+
+\noindent\textbf{tract\_population:}
+
+is a discrete count of tract residents
+
+\noindent\textbf{county\_code:}
+
+State-county FIPS code with Varying values and is a Categorical variable
+
+\noindent\textbf{derived\_msa-md:}
+
+The 5 digit derived MSA (metropolitan statistical area) or MD (metropolitan division) code. It has varying values and is a categorical variable
+
+\section{Methods}
+
+We will be comparing the denial rate of different groups, in terms of race/ethnicity, lender and the percent minority in a census tract, as well as showing the size of each group and their confidence intervals. After factoring income, loan amount, debt-to-income ratio, loan type, lender, and metro area, using logistic regression analysis, we will determine if the difference in denial rates is still significant and how the results have changed. If there is enough time, we would like to try exploring Explainable Boosting Models (EBMs). These models are able to find complex relationships while providing a way to visualize the effect that each individual variable has on a prediction. We also plan on analyzing stronger vs. weaker associations among the groups based upon predicted denial rates.
+
+\section{Research Expectations}
+
+By comparing denial rates with group sizes and confidence intervals, we expect that Black and Hispanic applicants to be denied more compared to White applicants. For Asian applicants we expect that their denial rates will be higher than those of Blacks and Hispanics but less than those of Whites. Denial rates are expected to rise with minorities in the census tract. Groups with many applicants such as White applicants will have a narrow confidence interval which will help us draw conclusions.
+
+After we use logistic regression and control some factors such as income, loan amount, debt-to-income ratio, loan type, lender, and metro area, we expect the racial gaps to shrink but remain statistically significant, mostly for Black and Hispanic applicants. We expect income and debt-to-income ratio to explain the largest share of the differences.
+
+\section{Group Contract}
+
+Our team is going to follow all the collaboration expectations that are outlined in this course: all members of our group agree to put in an equitable amount of effort and quality in the project. Everyone will be familiar with how our project works as far as its code and analysis go. Everyone will also help by pairing up while coding. Each week we will get together to discuss what everyone needs to do next and who has done their part and if they have hit any blockers. We plan on using our group's Google Drive for any preliminary versions of our papers, for taking notes, and for any other type of collaborative scratch work. The GitHub repository will contain the final version of our completed project at each deliverable, as well as code notebook version control. We plan to create pull requests (and have another member of our group review) prior to merging them into our 'main' branch.
+
+\end{document}
