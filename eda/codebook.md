@@ -1,7 +1,5 @@
 # Codebook
 
-Data: 2025 Home Mortgage Disclosure Act (HMDA) applications for New York State, file `250 project cleaned.csv` (10,513 applications, 21 variables).
-
 ## Original HMDA variables
 
 | Variable | Type | Description | Values / units |
